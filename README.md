@@ -17,8 +17,6 @@ A lightweight desktop tool that **automatically detects and clicks the Skip Ad b
 
 ## 🖥️ Preview
 
-## 🖥️ Preview
-
 ![Screenshot](screenshot.png)
 
 ---
@@ -174,6 +172,72 @@ pip install pyautogui pytesseract opencv-python Pillow numpy
 
 ---
 
+## 📦 Build a Standalone `.exe` (Windows)
+
+You can package the app into a single clickable `.exe` file that runs without needing Python installed.
+
+### Step 1 — Install PyInstaller
+
+```bash
+pip install pyinstaller
+```
+
+### Step 2 — Prepare your icon
+
+Make sure you have an `icon.ico` file in your project folder. If you only have a `.png`, convert it to `.ico` using an online tool like [icoconvert.com](https://icoconvert.com) or [convertio.co](https://convertio.co).
+
+Your project folder should look like this before building:
+
+```
+yt-ad-skipper/
+├── ad_skipper.py
+├── icon.ico          ← required for the exe icon
+├── requirements.txt
+└── README.md
+```
+
+### Step 3 — Build the `.exe`
+
+Run this command from inside your project folder:
+
+```bash
+pyinstaller --noconfirm --onefile --windowed --icon=icon.ico --add-data "icon.ico;." --name "YT Ad Skipper" ad_skipper.py
+```
+
+| Flag                      | What it does                                              |
+| ------------------------- | --------------------------------------------------------- |
+| `--onefile`               | Packages everything into a single `.exe` file             |
+| `--windowed`              | Hides the terminal/console window when the app runs       |
+| `--icon=icon.ico`         | Sets the taskbar and file icon                            |
+| `--add-data "icon.ico;."` | Bundles the icon inside the `.exe` so it loads at runtime |
+| `--name "YT Ad Skipper"`  | Sets the output filename                                  |
+| `--noconfirm`             | Skips overwrite confirmation if a previous build exists   |
+
+### Step 4 — Find your `.exe`
+
+After the build finishes, your executable will be at:
+
+```
+dist/YT Ad Skipper.exe
+```
+
+Double-click it to run — no Python, no terminal needed.
+
+> **Note:** Windows Defender or antivirus software may flag the `.exe` the first time. This is a false positive common with PyInstaller-built apps. You can safely click "Allow" or add an exclusion.
+
+### Clean up build files (optional)
+
+PyInstaller generates some extra folders you don't need to keep:
+
+```bash
+rmdir /s /q build
+del "YT Ad Skipper.spec"
+```
+
+The only file you need to distribute is `dist/YT Ad Skipper.exe`.
+
+---
+
 ## ▶️ Running the Program
 
 ```bash
@@ -238,5 +302,3 @@ SEARCH_ZONE_BOTTOM = 1.00
 
 - Make sure your display scaling is set to 100% in Windows display settings
 - If you use multiple monitors, the Skip button must be on the primary display
-
----
