@@ -168,7 +168,3 @@ SEARCH_ZONE_BOTTOM = 1.00
 - If you use multiple monitors, the Skip button must be on the primary display
 
 ---
-
-## 📄 License
-
-MIT License — free to use, modify, and distribute.
