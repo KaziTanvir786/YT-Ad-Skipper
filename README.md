@@ -292,8 +292,3 @@ SEARCH_ZONE_BOTTOM = 1.00
 - Make sure your display scaling is set to 100% in Windows display settings
 - If you use multiple monitors, the Skip button must be on the primary display
 
----
-
-## 📄 License
-
-MIT License — free to use, modify, and distribute.
