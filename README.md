@@ -23,15 +23,15 @@ A lightweight desktop tool that **automatically detects and clicks the Skip Ad b
 
 ## 🧩 Dependencies
 
-| Dependency        | Purpose                                 |
-| ----------------- | --------------------------------------- |
-| **Python 3.8+**   | Runtime                                 |
+| Dependency | Purpose |
+|---|---|
+| **Python 3.8+** | Runtime |
 | **Tesseract OCR** | Text detection engine (external binary) |
-| `pyautogui`       | Screen capture & mouse control          |
-| `pytesseract`     | Python wrapper for Tesseract            |
-| `opencv-python`   | Image preprocessing                     |
-| `Pillow`          | Image handling                          |
-| `numpy`           | Array operations for image data         |
+| `pyautogui` | Screen capture & mouse control |
+| `pytesseract` | Python wrapper for Tesseract |
+| `opencv-python` | Image preprocessing |
+| `Pillow` | Image handling |
+| `numpy` | Array operations for image data |
 
 ---
 
@@ -59,7 +59,6 @@ Tesseract is an external OCR engine that must be installed separately before the
 Go to: [https://github.com/UB-Mannheim/tesseract/wiki](https://github.com/UB-Mannheim/tesseract/wiki)
 
 Download the latest 64-bit installer — the filename looks like:
-
 ```
 tesseract-ocr-w64-setup-5.x.x.exe
 ```
@@ -97,7 +96,6 @@ tesseract --version
 ```
 
 ✅ Expected output:
-
 ```
 tesseract 5.5.0
  ...
@@ -114,7 +112,6 @@ pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tessera
 ```
 
 If you installed to a different location, find the correct path by running:
-
 ```bash
 where tesseract
 ```
@@ -128,7 +125,6 @@ brew install tesseract
 ```
 
 Verify:
-
 ```bash
 tesseract --version
 ```
@@ -143,7 +139,6 @@ sudo apt install tesseract-ocr
 ```
 
 Verify:
-
 ```bash
 tesseract --version
 ```
@@ -165,7 +160,6 @@ pip install pyautogui pytesseract opencv-python Pillow numpy
 ```
 
 > **Note:** `tkinter` (used for the GUI) is built into Python on Windows and macOS. On Linux, install it separately if needed:
->
 > ```bash
 > sudo apt install python3-tk
 > ```
@@ -187,7 +181,6 @@ pip install pyinstaller
 Make sure you have an `icon.ico` file in your project folder. If you only have a `.png`, convert it to `.ico` using an online tool like [icoconvert.com](https://icoconvert.com) or [convertio.co](https://convertio.co).
 
 Your project folder should look like this before building:
-
 ```
 yt-ad-skipper/
 ├── ad_skipper.py
@@ -201,24 +194,24 @@ yt-ad-skipper/
 Run this command from inside your project folder:
 
 ```bash
-pyinstaller --noconfirm --onefile --windowed --icon=icon.ico --add-data "icon.ico;." --name "YT Ad Skipper" ad_skipper.py
+pyinstaller --noconsole --onefile --icon=icon.ico --add-data "icon.ico;." --exclude-module PyQt6 --exclude-module PyQt5 index.py
 ```
 
-| Flag                      | What it does                                              |
-| ------------------------- | --------------------------------------------------------- |
-| `--onefile`               | Packages everything into a single `.exe` file             |
-| `--windowed`              | Hides the terminal/console window when the app runs       |
-| `--icon=icon.ico`         | Sets the taskbar and file icon                            |
+| Flag | What it does |
+|---|---|
+| `--onefile` | Packages everything into a single `.exe` file |
+| `--noconsole` | Hides the terminal/console window when the app runs |
+| `--icon=icon.ico` | Sets the taskbar and file icon |
 | `--add-data "icon.ico;."` | Bundles the icon inside the `.exe` so it loads at runtime |
-| `--name "YT Ad Skipper"`  | Sets the output filename                                  |
-| `--noconfirm`             | Skips overwrite confirmation if a previous build exists   |
+| `--exclude-module PyQt6` | Excludes PyQt6 to reduce file size and avoid conflicts |
+| `--exclude-module PyQt5` | Excludes PyQt5 to reduce file size and avoid conflicts |
 
 ### Step 4 — Find your `.exe`
 
 After the build finishes, your executable will be at:
 
 ```
-dist/YT Ad Skipper.exe
+dist/index.exe
 ```
 
 Double-click it to run — no Python, no terminal needed.
@@ -231,10 +224,10 @@ PyInstaller generates some extra folders you don't need to keep:
 
 ```bash
 rmdir /s /q build
-del "YT Ad Skipper.spec"
+del index.spec
 ```
 
-The only file you need to distribute is `dist/YT Ad Skipper.exe`.
+The only file you need to distribute is `dist/index.exe`.
 
 ---
 
@@ -283,22 +276,19 @@ SEARCH_ZONE_BOTTOM = 1.00
 ## ❓ Troubleshooting
 
 **Skip button not detected?**
-
 - Lower `CONFIDENCE_MIN` from `30` to `20`
 - Make sure your browser zoom is at 100%
 - Widen the scan zone by lowering `SEARCH_ZONE_LEFT` and `SEARCH_ZONE_TOP`
 
 **Clicking wrong buttons?**
-
 - Raise `CONFIDENCE_MIN` to `50` or higher
 - Narrow the scan zone by raising `SEARCH_ZONE_LEFT` / `SEARCH_ZONE_TOP`
 
 **`TesseractNotFoundError`?**
-
 - Tesseract is not installed or the path in `ad_skipper.py` is wrong
 - Run `where tesseract` in your terminal and copy that path into the `tesseract_cmd` line
 
 **Mouse goes to wrong position?**
-
 - Make sure your display scaling is set to 100% in Windows display settings
 - If you use multiple monitors, the Skip button must be on the primary display
+
