@@ -17,35 +17,23 @@ A lightweight desktop tool that **automatically detects and clicks the Skip Ad b
 
 ## 🖥️ Preview
 
-```
-┌─────────────────────────────────────┐
-│  📺 Ad Skipper   YouTube · Automatic │
-│─────────────────────────────────────│
-│  Auto Skip Ads            [  ●  ]   │
-│  ● Active                           │
-│─────────────────────────────────────│
-│  [ 7  ADS SKIPPED ] [ 142 SCANS ]   │
-│─────────────────────────────────────│
-│  ACTIVITY LOG                 Clear │
-│  [10:42:04] Skipper started         │
-│  [10:43:11] Skipped "Skip Ad" 72%   │
-│  [10:45:33] Skipped "Skip Ad" 68%   │
-└─────────────────────────────────────┘
-```
+## 🖥️ Preview
+
+![Screenshot](screenshot.png)
 
 ---
 
 ## 🧩 Dependencies
 
-| Dependency | Purpose |
-|---|---|
-| **Python 3.8+** | Runtime |
+| Dependency        | Purpose                                 |
+| ----------------- | --------------------------------------- |
+| **Python 3.8+**   | Runtime                                 |
 | **Tesseract OCR** | Text detection engine (external binary) |
-| `pyautogui` | Screen capture & mouse control |
-| `pytesseract` | Python wrapper for Tesseract |
-| `opencv-python` | Image preprocessing |
-| `Pillow` | Image handling |
-| `numpy` | Array operations for image data |
+| `pyautogui`       | Screen capture & mouse control          |
+| `pytesseract`     | Python wrapper for Tesseract            |
+| `opencv-python`   | Image preprocessing                     |
+| `Pillow`          | Image handling                          |
+| `numpy`           | Array operations for image data         |
 
 ---
 
@@ -73,6 +61,7 @@ Tesseract is an external OCR engine that must be installed separately before the
 Go to: [https://github.com/UB-Mannheim/tesseract/wiki](https://github.com/UB-Mannheim/tesseract/wiki)
 
 Download the latest 64-bit installer — the filename looks like:
+
 ```
 tesseract-ocr-w64-setup-5.x.x.exe
 ```
@@ -110,6 +99,7 @@ tesseract --version
 ```
 
 ✅ Expected output:
+
 ```
 tesseract 5.5.0
  ...
@@ -126,6 +116,7 @@ pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tessera
 ```
 
 If you installed to a different location, find the correct path by running:
+
 ```bash
 where tesseract
 ```
@@ -139,6 +130,7 @@ brew install tesseract
 ```
 
 Verify:
+
 ```bash
 tesseract --version
 ```
@@ -153,6 +145,7 @@ sudo apt install tesseract-ocr
 ```
 
 Verify:
+
 ```bash
 tesseract --version
 ```
@@ -174,6 +167,7 @@ pip install pyautogui pytesseract opencv-python Pillow numpy
 ```
 
 > **Note:** `tkinter` (used for the GUI) is built into Python on Windows and macOS. On Linux, install it separately if needed:
+>
 > ```bash
 > sudo apt install python3-tk
 > ```
@@ -225,19 +219,23 @@ SEARCH_ZONE_BOTTOM = 1.00
 ## ❓ Troubleshooting
 
 **Skip button not detected?**
+
 - Lower `CONFIDENCE_MIN` from `30` to `20`
 - Make sure your browser zoom is at 100%
 - Widen the scan zone by lowering `SEARCH_ZONE_LEFT` and `SEARCH_ZONE_TOP`
 
 **Clicking wrong buttons?**
+
 - Raise `CONFIDENCE_MIN` to `50` or higher
 - Narrow the scan zone by raising `SEARCH_ZONE_LEFT` / `SEARCH_ZONE_TOP`
 
 **`TesseractNotFoundError`?**
+
 - Tesseract is not installed or the path in `ad_skipper.py` is wrong
 - Run `where tesseract` in your terminal and copy that path into the `tesseract_cmd` line
 
 **Mouse goes to wrong position?**
+
 - Make sure your display scaling is set to 100% in Windows display settings
 - If you use multiple monitors, the Skip button must be on the primary display
 
