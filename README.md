@@ -17,21 +17,35 @@ A lightweight desktop tool that **automatically detects and clicks the Skip Ad b
 
 ## 🖥️ Preview
 
-![Screenshot](screenshot.png)
+```
+┌─────────────────────────────────────┐
+│  📺 Ad Skipper   YouTube · Automatic │
+│─────────────────────────────────────│
+│  Auto Skip Ads            [  ●  ]   │
+│  ● Active                           │
+│─────────────────────────────────────│
+│  [ 7  ADS SKIPPED ] [ 142 SCANS ]   │
+│─────────────────────────────────────│
+│  ACTIVITY LOG                 Clear │
+│  [10:42:04] Skipper started         │
+│  [10:43:11] Skipped "Skip Ad" 72%   │
+│  [10:45:33] Skipped "Skip Ad" 68%   │
+└─────────────────────────────────────┘
+```
 
 ---
 
 ## 🧩 Dependencies
 
-| Dependency        | Purpose                                 |
-| ----------------- | --------------------------------------- |
-| **Python 3.8+**   | Runtime                                 |
+| Dependency | Purpose |
+|---|---|
+| **Python 3.8+** | Runtime |
 | **Tesseract OCR** | Text detection engine (external binary) |
-| `pyautogui`       | Screen capture & mouse control          |
-| `pytesseract`     | Python wrapper for Tesseract            |
-| `opencv-python`   | Image preprocessing                     |
-| `Pillow`          | Image handling                          |
-| `numpy`           | Array operations for image data         |
+| `pyautogui` | Screen capture & mouse control |
+| `pytesseract` | Python wrapper for Tesseract |
+| `opencv-python` | Image preprocessing |
+| `Pillow` | Image handling |
+| `numpy` | Array operations for image data |
 
 ---
 
@@ -44,61 +58,125 @@ git clone https://github.com/your-username/yt-ad-skipper.git
 cd yt-ad-skipper
 ```
 
-### Step 2 — Install Tesseract OCR (required)
+---
 
-Tesseract is an external program that must be installed separately.
+### Step 2 — Install Tesseract OCR
 
-**Windows:**
+Tesseract is an external OCR engine that must be installed separately before the Python packages.
 
-1. Download the installer from the [UB Mannheim builds page](https://github.com/UB-Mannheim/tesseract/wiki)
-2. Download `tesseract-ocr-w64-setup-5.x.x.exe`
-3. Run the installer — keep all defaults
-4. After install, confirm it works by opening a new terminal and running:
+---
+
+#### 🪟 Windows
+
+**1. Download the installer**
+
+Go to: [https://github.com/UB-Mannheim/tesseract/wiki](https://github.com/UB-Mannheim/tesseract/wiki)
+
+Download the latest 64-bit installer — the filename looks like:
+```
+tesseract-ocr-w64-setup-5.x.x.exe
+```
+
+**2. Run the installer**
+
+- Double-click the downloaded `.exe`
+- Click **Next** on all screens — keep all default options
+- Default install path: `C:\Program Files\Tesseract-OCR\`
+- Click **Install**, then **Finish**
+
+**3. Add Tesseract to your system PATH**
+
+> This lets you run `tesseract` from any terminal.
+
+- Press `Win + R`, type the following, and press Enter:
+  ```
+  rundll32 sysdm.cpl,EditEnvironmentVariables
+  ```
+- In the **System variables** panel (bottom half), find the variable named `Path`
+- Double-click `Path`
+- Click **New**
+- Paste this:
+  ```
+  C:\Program Files\Tesseract-OCR
+  ```
+- Click **OK** → **OK** → **OK** to close all windows
+
+**4. Verify the install**
+
+Close any open terminals, open a new one, and run:
 
 ```bash
 tesseract --version
 ```
 
-You should see something like `tesseract 5.5.0`.
+✅ Expected output:
+```
+tesseract 5.5.0
+ ...
+```
 
-> If you get "not recognized", add Tesseract to your PATH manually:
-> `Win + R` → `rundll32 sysdm.cpl,EditEnvironmentVariables` → System Variables → `Path` → New → paste `C:\Program Files\Tesseract-OCR`
+❌ If you see `'tesseract' is not recognized` — the PATH was not saved correctly. Repeat step 3 and make sure to open a **new** terminal window after.
 
-**macOS:**
+**5. Confirm the path in the script**
+
+Open `ad_skipper.py` and make sure this line matches your install location:
+
+```python
+pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
+```
+
+If you installed to a different location, find the correct path by running:
+```bash
+where tesseract
+```
+
+---
+
+#### 🍎 macOS
 
 ```bash
 brew install tesseract
 ```
 
-**Linux:**
+Verify:
+```bash
+tesseract --version
+```
+
+---
+
+#### 🐧 Linux (Ubuntu / Debian)
 
 ```bash
+sudo apt update
 sudo apt install tesseract-ocr
+```
+
+Verify:
+```bash
+tesseract --version
 ```
 
 ---
 
 ### Step 3 — Install Python dependencies
 
-```bash
-pip install pyautogui pytesseract opencv-python pillow numpy
-```
-
----
-
-### Step 4 — Configure Tesseract path (Windows only)
-
-Open `ad_skipper.py` and confirm this line matches your Tesseract install location:
-
-```python
-pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
-```
-
-If you installed Tesseract to a different folder, update this path accordingly. To find it, run:
+All Python packages are listed in `requirements.txt`. Install them with one command:
 
 ```bash
-where tesseract
+pip install -r requirements.txt
 ```
+
+Or manually if preferred:
+
+```bash
+pip install pyautogui pytesseract opencv-python Pillow numpy
+```
+
+> **Note:** `tkinter` (used for the GUI) is built into Python on Windows and macOS. On Linux, install it separately if needed:
+> ```bash
+> sudo apt install python3-tk
+> ```
 
 ---
 
@@ -147,23 +225,19 @@ SEARCH_ZONE_BOTTOM = 1.00
 ## ❓ Troubleshooting
 
 **Skip button not detected?**
-
 - Lower `CONFIDENCE_MIN` from `30` to `20`
 - Make sure your browser zoom is at 100%
 - Widen the scan zone by lowering `SEARCH_ZONE_LEFT` and `SEARCH_ZONE_TOP`
 
 **Clicking wrong buttons?**
-
 - Raise `CONFIDENCE_MIN` to `50` or higher
 - Narrow the scan zone by raising `SEARCH_ZONE_LEFT` / `SEARCH_ZONE_TOP`
 
 **`TesseractNotFoundError`?**
-
 - Tesseract is not installed or the path in `ad_skipper.py` is wrong
 - Run `where tesseract` in your terminal and copy that path into the `tesseract_cmd` line
 
 **Mouse goes to wrong position?**
-
 - Make sure your display scaling is set to 100% in Windows display settings
 - If you use multiple monitors, the Skip button must be on the primary display
 
